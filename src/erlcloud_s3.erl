@@ -623,7 +623,7 @@ make_get_url(Expire_time, BucketName, Key, Config) ->
      "&Expires=", Expires].
 
 -spec start_multipart(string(), string()) -> {ok, proplist()} | {error, any()}.
-start_multipart(BucketName, Key) 
+start_multipart(BucketName, Key)
     when is_list(BucketName), is_list(Key) ->
     start_multipart(BucketName, Key, [], [], default_config()).
 
@@ -637,7 +637,7 @@ start_multipart(BucketName, Key, Options, HTTPHeaders, Config)
     POSTData = <<>>,
     case s3_xml_request2(Config, post, BucketName, [$/|Key], "uploads", [],
 			 POSTData, RequestHeaders) of
-	{ok, Doc} ->	
+	{ok, Doc} ->
 	    Attributes = [{uploadId, "UploadId", text}],
 	    {ok, erlcloud_xml:decode(Attributes, Doc)};
 
@@ -837,7 +837,7 @@ s3_simple_request(Config, Method, Host, Path, Subresource, Params, POSTData, Hea
 
 s3_xml_request(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) ->
     {_Headers, Body} = s3_request(Config, Method, Host, Path, Subresource, Params, POSTData, Headers),
-    XML = element(1,xmerl_scan:string(binary_to_list(Body))),
+    XML = element(1, xmerl_scan:string(binary_to_list(Body))),
     case XML of
         #xmlElement{name='Error'} ->
             ErrCode = erlcloud_xml:get_text("/Error/Code", XML),
@@ -867,8 +867,8 @@ s3_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) 
 
 s3_xml_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) ->
     case s3_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) of
-	{ok, {_Headers, Body}} ->
-	    XML = element(1,xmerl_scan:string(binary_to_list(Body))),
+	{ok, {_Headers, Body}} when is_list(Body) ->
+	    XML = element(1, xmerl_scan:string(binary_to_list(Body))),
 	    case XML of
 		#xmlElement{name='Error'} ->
 		    ErrCode = erlcloud_xml:get_text("/Error/Code", XML),

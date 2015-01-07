@@ -218,7 +218,7 @@ port_to_str(Port) when is_integer(Port) ->
 port_to_str(Port) when is_list(Port) ->
     Port.
 
--spec http_body({ok, tuple()} | {error, term()}) -> {ok, string()} | {error, tuple()}.
+-spec http_body({ok, tuple()} | {error, term()}) -> {ok, binary()} | {error, tuple()}.
 %% Extract the body and do error handling on the return of a httpc:request call.
 http_body(Return) ->
     case http_headers_body(Return) of
