@@ -867,7 +867,7 @@ s3_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) 
 
 s3_xml_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) ->
     case s3_request2(Config, Method, Host, Path, Subresource, Params, POSTData, Headers) of
-	{ok, {_Headers, Body}} when is_list(Body) ->
+	{ok, {_Headers, Body}} when is_binary(Body) ->
 	    XML = element(1, xmerl_scan:string(binary_to_list(Body))),
 	    case XML of
 		#xmlElement{name='Error'} ->
