@@ -195,13 +195,13 @@ get_credentials_from_metadata() ->
             {error, Reason};
         {ok, Body} ->
             %% Always use the first role
-            Role = string:sub_word(Body, 1, $\n),
+            Role = string:sub_word(binary_to_list(Body), 1, $\n),
             case http_body(httpc:request(
                              "http://169.254.169.254/latest/meta-data/iam/security-credentials/" ++ Role)) of
                 {error, Reason} ->
                     {error, Reason};
                 {ok, Json} ->
-                    Creds = jsx:decode(list_to_binary(Json)),
+                    Creds = jsx:decode(Json),
                     Record = #metadata_credentials
                         {access_key_id = binary_to_list(proplists:get_value(<<"AccessKeyId">>, Creds)),
                          secret_access_key = binary_to_list(proplists:get_value(<<"SecretAccessKey">>, Creds)),
