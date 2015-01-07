@@ -201,7 +201,7 @@ get_credentials_from_metadata() ->
                 {error, Reason} ->
                     {error, Reason};
                 {ok, Json} ->
-                    Creds = jsx:decode(Json),
+                    Creds = jsx:decode(list_to_binary(Json)),
                     Record = #metadata_credentials
                         {access_key_id = binary_to_list(proplists:get_value(<<"AccessKeyId">>, Creds)),
                          secret_access_key = binary_to_list(proplists:get_value(<<"SecretAccessKey">>, Creds)),
