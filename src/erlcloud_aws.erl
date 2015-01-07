@@ -185,7 +185,7 @@ get_metadata_credentials() ->
 timestamp_to_gregorian_seconds(Timestamp) ->
     {ok, [Yr, Mo, Da, H, M, S], []} = io_lib:fread("~d-~d-~dT~d:~d:~dZ", binary_to_list(Timestamp)),
     calendar:datetime_to_gregorian_seconds({{Yr, Mo, Da}, {H, M, S}}).
-    
+
 -spec get_credentials_from_metadata() -> {ok, #metadata_credentials{}} | {error, term()}.
 get_credentials_from_metadata() ->
     %% TODO this function should retry on errors getting credentials
@@ -201,7 +201,7 @@ get_credentials_from_metadata() ->
                 {error, Reason} ->
                     {error, Reason};
                 {ok, Json} ->
-                    Creds = jsx:decode(list_to_binary(Json)),
+                    Creds = jsx:decode(Json),
                     Record = #metadata_credentials
                         {access_key_id = binary_to_list(proplists:get_value(<<"AccessKeyId">>, Creds)),
                          secret_access_key = binary_to_list(proplists:get_value(<<"SecretAccessKey">>, Creds)),
